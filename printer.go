@@ -12,7 +12,10 @@ import (
 )
 
 func printCommandLineInfo(parsedArgs *tParsedArguments) {
-	if len(parsedArgs.unknownArgs) > 0 {
+	if parsedArgs.tooMany {
+		printTooManyArguments()
+
+	} else if len(parsedArgs.unknownArgs) > 0 {
 		printUnknownArguments(parsedArgs.unknownArgs)
 
 	} else if validHelp(parsedArgs) {
@@ -29,6 +32,10 @@ func printCommandLineInfo(parsedArgs *tParsedArguments) {
 	}
 }
 
+func printTooManyArguments() {
+	fmt.Println("Error: too many arguments")
+}
+
 func printUnknownArguments(unknownArguments []string) {
 	if len(unknownArguments) == 1 {
 		fmt.Print("Error: unknown argument")
@@ -38,7 +45,7 @@ func printUnknownArguments(unknownArguments []string) {
 	}
 
 	for _, arg := range unknownArguments {
-		fmt.Print(" ",arg)
+		fmt.Print(" ", arg)
 	}
 	fmt.Println()
 }
@@ -69,6 +76,6 @@ func printVersion() {
 
 func printCopyright() {
 	fmt.Println("Copyright 2017, Vitali Baumtrok (vbsw@mailbox.org).")
-	fmt.Println("gentext is distributed under the Boost Software License, version 1.0.");
-	fmt.Println("(See accompanying file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)");
+	fmt.Println("gentext is distributed under the Boost Software License, version 1.0.")
+	fmt.Println("(See accompanying file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)")
 }

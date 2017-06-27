@@ -14,10 +14,10 @@ import (
 
 func generateText(parsedArgs *tParsedArguments) {
 	if parsedArgs.outputStd {
-		generateOutputToStd(parsedArgs.bytesCount,parsedArgs.cores,parsedArgs.threads)
+		generateOutputToStd(parsedArgs.bytesCount, parsedArgs.cores, parsedArgs.threads)
 
 	} else {
-		generateOutputToFile(parsedArgs.bytesCount,parsedArgs.outputFile,parsedArgs.cores,parsedArgs.threads)
+		generateOutputToFile(parsedArgs.bytesCount, parsedArgs.outputFile, parsedArgs.cores, parsedArgs.threads)
 	}
 }
 
@@ -44,19 +44,19 @@ func generateOutputToStd(bytesCount int, cores int, threads int) {
 func generateOutputToFile(bytesCount int, fileName string, cores int, threads int) {
 	str := "sample."
 
-    // open output file
-    fo, err := os.Create(fileName)
-    if err != nil {
-        panic(err)
-    }
-    // close fo on exit and check for its returned error
-    defer func() {
-        if err := fo.Close(); err != nil {
-            panic(err)
-        }
-    }()
+	// open output file
+	fo, err := os.Create(fileName)
+	if err != nil {
+		panic(err)
+	}
+	// close fo on exit and check for its returned error
+	defer func() {
+		if err := fo.Close(); err != nil {
+			panic(err)
+		}
+	}()
 
-    for i := 0; i < bytesCount; i += len(str) {
+	for i := 0; i < bytesCount; i += len(str) {
 		bytesLeft := bytesCount - i
 
 		if bytesLeft < len(str) {
@@ -73,5 +73,5 @@ func generateOutputToFile(bytesCount int, fileName string, cores int, threads in
 				panic(err)
 			}
 		}
-    }
+	}
 }

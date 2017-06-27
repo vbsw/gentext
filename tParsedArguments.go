@@ -18,4 +18,5 @@ type tParsedArguments struct {
 	outputStd bool
 	cores int
 	threads int
+	tooMany bool
 }

@@ -23,6 +23,9 @@ func parseArguments(clArgs []string) *tParsedArguments {
 	} else if len(clArgs) == 3 {
 		parsedArgs = parseTwoArguments(parsedArgs, clArgs[1], clArgs[2])
 
+	} else if len(clArgs) > 5 {
+		parsedArgs.tooMany = true
+
 	} else {
 		parsedArgs = parseTwoArguments(parsedArgs, clArgs[1], clArgs[2])
 	}

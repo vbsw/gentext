@@ -23,6 +23,9 @@ func validCommandLineInfoOnly(parsedArgs *tParsedArguments) bool {
 	} else if parsedArgs.err != nil {
 		return true
 
+	} else if parsedArgs.tooMany {
+		return true
+
 	} else if parsedArgs.outputStd {
 		return false
 
