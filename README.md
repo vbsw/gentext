@@ -26,7 +26,7 @@ Input:
 
 Output:
 
-	$ asdf d ewq
+	asdf d ewq
 
 
 
