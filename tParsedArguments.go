@@ -7,16 +7,22 @@
 
 package main
 
+const (
+	result_HELP int = iota
+	result_VERSION
+	result_COPYRIGHT
+	result_OUTPUT_STD
+	result_OUTPUT_FILE
+	result_TOO_MANY
+	result_INVALID_ARGUMENTS
+	result_WRONG_COMBINATION
+)
+
 type tParsedArguments struct {
-	err error
-	helpArg bool
-	versionArg bool
-	copyrightArg bool
-	unknownArgs []string
-	bytesCount int
-	outputFile string
-	outputStd bool
-	cores int
-	threads int
-	tooMany bool
+	result           int
+	bytesCount       int
+	fileName         string
+	coresCount       int
+	threadsCount     int
+	invalidArguments []string
 }

@@ -13,15 +13,48 @@ import (
 )
 
 func generateText(parsedArgs *tParsedArguments) {
-	if parsedArgs.outputStd {
-		generateOutputToStd(parsedArgs.bytesCount, parsedArgs.cores, parsedArgs.threads)
+	parsedArgs.threadsCount = adjustThreadsCount(parsedArgs.coresCount, parsedArgs.threadsCount)
+
+	if parsedArgs.result == result_OUTPUT_STD {
+		generateOutputToStd(parsedArgs.bytesCount, parsedArgs.coresCount, parsedArgs.threadsCount)
 
 	} else {
-		generateOutputToFile(parsedArgs.bytesCount, parsedArgs.outputFile, parsedArgs.cores, parsedArgs.threads)
+		generateOutputToFile(parsedArgs.fileName, parsedArgs.bytesCount, parsedArgs.coresCount, parsedArgs.threadsCount)
 	}
 }
 
-func generateOutputToStd(bytesCount int, cores int, threads int) {
+func adjustThreadsCount(coresCount, threadsCount int) int {
+	if coresCount > 1 && threadsCount < 2 {
+		return int(float32(coresCount) * 1.5)
+
+	} else {
+		return coresCount
+	}
+}
+
+func generateOutputToStd(bytesCount, coresCount, threadsCount int) {
+	if coresCount > 1 {
+		generateOutputToStdMultiThreaded(bytesCount, coresCount, threadsCount)
+
+	} else {
+		generateOutputToStdSingleThreaded(bytesCount)
+	}
+}
+
+func generateOutputToFile(fileName string, bytesCount, coresCount, threadsCount int) {
+	if coresCount > 1 {
+		generateOutputToFileMultiThreaded(fileName, bytesCount, coresCount, threadsCount)
+
+	} else {
+		generateOutputToFileSingleThreaded(fileName, bytesCount)
+	}
+}
+
+func generateOutputToStdMultiThreaded(bytesCount, coresCount, threadsCount int) {
+	generateOutputToStdSingleThreaded(bytesCount)
+}
+
+func generateOutputToStdSingleThreaded(bytesCount int) {
 	str := "sample."
 
 	if bytesCount > 150000 {
@@ -41,7 +74,11 @@ func generateOutputToStd(bytesCount int, cores int, threads int) {
 	fmt.Println()
 }
 
-func generateOutputToFile(bytesCount int, fileName string, cores int, threads int) {
+func generateOutputToFileMultiThreaded(fileName string, bytesCount, coresCount, threadsCount int) {
+	generateOutputToFileSingleThreaded(fileName, bytesCount)
+}
+
+func generateOutputToFileSingleThreaded(fileName string, bytesCount int) {
 	str := "sample."
 
 	// open output file

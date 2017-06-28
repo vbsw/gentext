@@ -12,22 +12,22 @@ import (
 )
 
 func printCommandLineInfo(parsedArgs *tParsedArguments) {
-	if parsedArgs.tooMany {
-		printTooManyArguments()
-
-	} else if len(parsedArgs.unknownArgs) > 0 {
-		printUnknownArguments(parsedArgs.unknownArgs)
-
-	} else if validHelp(parsedArgs) {
+	if parsedArgs.result == result_HELP {
 		printHelp()
 
-	} else if validVersion(parsedArgs) {
+	} else if parsedArgs.result == result_VERSION {
 		printVersion()
 
-	} else if validCopyright(parsedArgs) {
+	} else if parsedArgs.result == result_COPYRIGHT {
 		printCopyright()
 
-	} else {
+	} else if parsedArgs.result == result_TOO_MANY {
+		printTooManyArguments()
+
+	} else if parsedArgs.result == result_INVALID_ARGUMENTS {
+		printInvalidArguments(parsedArgs.invalidArguments)
+
+	} else if parsedArgs.result == result_WRONG_COMBINATION {
 		printWrongCombination()
 	}
 }
@@ -36,15 +36,15 @@ func printTooManyArguments() {
 	fmt.Println("Error: too many arguments")
 }
 
-func printUnknownArguments(unknownArguments []string) {
-	if len(unknownArguments) == 1 {
-		fmt.Print("Error: unknown argument")
+func printInvalidArguments(invalidArguments []string) {
+	if len(invalidArguments) == 1 {
+		fmt.Print("Error: invalid argument")
 
 	} else {
-		fmt.Print("Error: unknown arguments")
+		fmt.Print("Error: invalid arguments")
 	}
 
-	for _, arg := range unknownArguments {
+	for _, arg := range invalidArguments {
 		fmt.Print(" ", arg)
 	}
 	fmt.Println()
@@ -57,12 +57,12 @@ func printWrongCombination() {
 func printHelp() {
 	fmt.Println("Usage:")
 	fmt.Println("  gentext [OPTIONS]")
-	fmt.Println("  gentext SIZE OUTPUT {THREAD-OPTIONS}")
+	fmt.Println("  gentext SIZE OUTPUT {GENERATOR-OPTIONS}")
 	fmt.Println("OPTION")
 	fmt.Println("  -help       prints this help")
 	fmt.Println("  -version    prints version numer of gentext")
 	fmt.Println("  -copyright  prints copyright of gentext")
-	fmt.Println("THREAD-OPTION")
+	fmt.Println("GENERATOR-OPTIONS")
 	fmt.Println("  -cN         sets the number of logical CPUs to N")
 	fmt.Println("  -tN         sets the number of threads to N")
 	fmt.Println("Example")
